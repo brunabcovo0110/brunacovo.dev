@@ -178,6 +178,22 @@ Dois cuidados que valem lembrar se for mexer:
   para sempre. Foi exatamente o que aconteceu com o `<h1>` do hero na primeira
   versão; hoje o efeito de entrada dele é feito com `letter-spacing`.
 
+- **O site abre sempre no topo, e isso é código, não acaso.** Num site de uma
+  página só, duas coisas do navegador jogavam o visitante no meio do site:
+  o `history.scrollRestoration`, que devolve a pessoa onde ela parou quando
+  recarrega ou reabre a aba; e o `#secao` que sobrava na barra de endereço
+  depois de clicar no menu, fazendo quem abrisse aquele link pular direto
+  para a seção. As duas são desligadas em `setupScrollStart`, e a rolagem dos
+  links passou a ser feita em `setupSmoothLinks`, sem escrever na URL. Por
+  isso `html` **não** tem `scroll-behavior: smooth`: se tivesse, o "voltar ao
+  topo" da abertura desceria deslizando na frente do visitante.
+
+- **Cuidado ao forçar o topo no evento `load`.** A primeira versão dessa
+  correção puxava a página para o topo quando o `load` disparava — e quem
+  clicasse no menu enquanto as imagens ainda carregavam era arrastado de
+  volta no meio da rolagem. Hoje existe uma trava (`userMoved`) que cancela
+  o reset assim que a pessoa toca, rola ou clica.
+
 Tudo respeita `prefers-reduced-motion`: com a opção ligada no sistema, o site
 fica parado sem perder nenhum conteúdo.
 

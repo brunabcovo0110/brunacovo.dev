@@ -10,7 +10,81 @@
   var $ = function (sel) { return document.querySelector(sel); };
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------------- 1. Navegação ---------------- */
+  /* ---------------- 1. Abrir sempre no topo ---------------- */
+
+  /* Num site de uma página só, duas coisas do navegador faziam o visitante
+     cair no meio do site em vez de começar pelo hero:
+
+     1. scrollRestoration: ao recarregar (F5) ou reabrir a aba, o navegador
+        devolve a pessoa exatamente onde ela tinha parado.
+     2. o #secao que sobrava na URL depois de clicar no menu: quem abrisse
+        aquele endereço de novo pulava direto para a seção.
+
+     Aqui as duas são desligadas. A rolagem suave do menu passa a ser feita
+     no JS (setupSmoothLinks), sem escrever nada na URL. */
+  function setupScrollStart() {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+    // limpa o #secao herdado, sem criar entrada nova no histórico
+    if (location.hash) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+
+    /* Só voltamos ao topo enquanto a pessoa não tiver mexido na página.
+       Sem esta trava, quem clicasse no menu durante o carregamento (as
+       imagens e fontes ainda descendo) era puxado de volta ao topo pelo
+       "load" no meio da rolagem. */
+    var userMoved = false;
+    var markMoved = function () { userMoved = true; };
+
+    ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (evt) {
+      window.addEventListener(evt, markMoved, { passive: true });
+    });
+
+    var toTop = function () {
+      if (!userMoved) window.scrollTo(0, 0);
+    };
+
+    toTop();
+    window.addEventListener("load", toTop);
+
+    // no celular, voltar para a aba restaura da memória e não dispara "load"
+    window.addEventListener("pageshow", function (event) {
+      if (!event.persisted) return;
+      userMoved = false; // é uma abertura nova aos olhos de quem está vendo
+      window.scrollTo(0, 0);
+    });
+  }
+
+  /* ---------------- 2. Rolagem suave dos links ---------------- */
+
+  /* Os links do menu continuam sendo âncoras de verdade (funcionam sem JS,
+     dá para abrir em outra aba), mas o clique é interceptado para rolar
+     sem deixar o #secao na barra de endereço. */
+  function setupSmoothLinks() {
+    var NAV_OFFSET = 76; // altura da nav fixa, para a seção não ficar por baixo
+
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+
+      // deixa o navegador cuidar de ctrl+clique, clique do meio etc.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+
+      var alvo = document.querySelector(link.getAttribute("href"));
+      if (!alvo) return;
+
+      event.preventDefault();
+
+      var y = alvo.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+      window.scrollTo({
+        top: Math.max(0, y),
+        behavior: reduced ? "auto" : "smooth"
+      });
+    });
+  }
+
+  /* ---------------- 3. Navegação ---------------- */
 
   function setupNav() {
     var nav = $("#nav");
@@ -53,7 +127,7 @@
     sections.forEach(function (s) { spy.observe(s); });
   }
 
-  /* ---------------- 2. Efeito de digitação do hero ---------------- */
+  /* ---------------- 4. Efeito de digitação do hero ---------------- */
 
   function setupTyping() {
     var el = $("#typingText");
@@ -101,7 +175,7 @@
     tick();
   }
 
-  /* ---------------- 3. Retrato do Sobre ---------------- */
+  /* ---------------- 5. Retrato do Sobre ---------------- */
 
   /* Se o arquivo da foto não estiver na pasta, o círculo mostra as
      iniciais em vez do ícone de imagem quebrada do navegador. */
@@ -120,7 +194,7 @@
     if (img.complete && img.naturalWidth === 0) markMissing();
   }
 
-  /* ---------------- 4. Lab 3D ---------------- */
+  /* ---------------- 6. Lab 3D ---------------- */
 
   function setupLab() {
     var canvas = $("#lab3d");
@@ -152,7 +226,7 @@
     });
   }
 
-  /* ---------------- 5. Skills ---------------- */
+  /* ---------------- 7. Skills ---------------- */
 
   function renderSkills(rows, offline) {
     var grid = $("#skillsGrid");
@@ -247,7 +321,7 @@
     }
   }
 
-  /* ---------------- 6. Projetos ---------------- */
+  /* ---------------- 8. Projetos ---------------- */
 
   function renderProjects(rows, offline) {
     var grid = $("#projectsGrid");
@@ -325,10 +399,11 @@
     Effects.tilt(grid);
   }
 
-  /* ---------------- 7. Boot ---------------- */
+  /* ---------------- 9. Boot ---------------- */
 
   function init() {
     setupNav();
+    setupSmoothLinks();
     setupTyping();
     setupAvatar();
     setupLab();
@@ -342,6 +417,10 @@
       renderProjects(res.rows, res.offline);
     });
   }
+
+  /* Este roda já, sem esperar o DOMContentLoaded: quanto antes o scroll
+     for zerado, menor a chance de a pessoa ver a página piscar no meio. */
+  setupScrollStart();
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

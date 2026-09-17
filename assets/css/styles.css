@@ -44,9 +44,11 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
-  /* compensa a nav fixa quando o link âncora salta para a seção */
-  scroll-padding-top: 88px;
+  /* Sem scroll-behavior: smooth aqui de propósito. A rolagem suave dos
+     links do menu é feita no JS (setupSmoothLinks), para que o "voltar
+     ao topo" ao abrir a página seja instantâneo em vez de descer
+     deslizando na frente do visitante. */
+  scroll-padding-top: 88px; /* compensa a nav fixa na navegação por teclado */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -1154,7 +1156,6 @@ code {
 /* Respeita quem pediu menos movimento no sistema: o site inteiro fica
    parado, sem perder nenhum conteúdo. */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
 
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
