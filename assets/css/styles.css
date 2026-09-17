@@ -572,14 +572,24 @@ code {
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.07), 0 10px 26px -14px rgba(0, 0, 0, 0.9);
 }
 
+/* Enquadramento do retrato.
+   A foto original é de corpo inteiro (365x491), então o círculo precisa
+   aproximar e deslocar para cair no rosto. Três variáveis controlam isso:
+     --zoom  largura da foto em relação ao círculo (220% = 2,2x)
+     --ox    empurra para os lados (negativo = para a esquerda)
+     --oy    empurra para baixo
+   Se um dia a foto mudar, é só mexer nestes três valores. */
 .sobre__avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* a foto é inteira, em pé: o enquadramento sobe para pegar o rosto */
-  object-position: 57% 12%;
-  transform: scale(1.5);
-  transform-origin: 57% 22%;
+  --zoom: 285%;
+  --ox: -17px;
+  --oy: 30px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--zoom);
+  height: auto;
+  transform: translate(calc(-50% + var(--ox)), calc(-50% + var(--oy)));
   display: block;
 }
 

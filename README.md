@@ -35,6 +35,8 @@ brunacovo.dev/
 ├── index.html                  # página única, com todas as seções
 ├── assets/
 │   ├── favicon.svg
+│   ├── img/
+│   │   └── bruna.png           # retrato exibido na seção Sobre
 │   ├── css/
 │   │   └── styles.css          # estilo completo, mobile-first
 │   └── js/
