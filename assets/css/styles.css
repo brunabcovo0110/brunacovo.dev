@@ -573,16 +573,16 @@ code {
 }
 
 /* Enquadramento do retrato.
-   A foto original é de corpo inteiro (365x491), então o círculo precisa
-   aproximar e deslocar para cair no rosto. Três variáveis controlam isso:
-     --zoom  largura da foto em relação ao círculo (220% = 2,2x)
+   A foto é uma selfie (462x439), então o círculo ajusta o enquadramento
+   para o rosto sem colar nele. Três variáveis controlam isso:
+     --zoom  largura da foto em relação ao círculo (140% = 1,4x)
      --ox    empurra para os lados (negativo = para a esquerda)
      --oy    empurra para baixo
    Se um dia a foto mudar, é só mexer nestes três valores. */
 .sobre__avatar img {
-  --zoom: 285%;
-  --ox: -17px;
-  --oy: 30px;
+  --zoom: 140%;
+  --ox: -6px;
+  --oy: 8px;
 
   position: absolute;
   top: 50%;
