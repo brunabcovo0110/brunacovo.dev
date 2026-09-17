@@ -552,7 +552,70 @@ code {
   font-size: 0.78rem;
   color: var(--dim);
 }
-.sobre__body { padding: 24px 22px 10px; }
+/* Retrato: discreto, só para quem chega saber com quem vai falar. */
+.sobre__me {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 22px 18px;
+  border-bottom: 1px dashed var(--border-soft);
+}
+
+.sobre__avatar {
+  flex: none;
+  position: relative;
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(140deg, rgba(37, 99, 235, 0.35), rgba(34, 211, 238, 0.2));
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.07), 0 10px 26px -14px rgba(0, 0, 0, 0.9);
+}
+
+.sobre__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* a foto é inteira, em pé: o enquadramento sobe para pegar o rosto */
+  object-position: 57% 12%;
+  transform: scale(1.5);
+  transform-origin: 57% 22%;
+  display: block;
+}
+
+/* se o arquivo da foto não estiver lá, mostra as iniciais no lugar */
+.sobre__avatar::after {
+  content: "BC";
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--neon);
+}
+.sobre__avatar.is-missing img { display: none; }
+.sobre__avatar.is-missing::after { display: grid; }
+
+.sobre__me-text { display: grid; gap: 3px; min-width: 0; }
+.sobre__me-name { font-size: 1.05rem; font-weight: 600; }
+.sobre__me-role {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.sobre__me-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--mint);
+}
+
+.sobre__body { padding: 20px 22px 10px; }
 .sobre__body p { font-size: 1.02rem; color: #c7d8f2; }
 .sobre__body strong { color: #fff; font-weight: 600; }
 
@@ -795,49 +858,93 @@ code {
 .project__link--off { color: var(--dim); }
 
 /* ---------- 12. Contato ---------- */
-.contact { display: grid; gap: 13px; }
-@media (min-width: 640px)  { .contact { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1040px) { .contact { grid-template-columns: repeat(4, 1fr); } }
+.contact { display: grid; gap: 16px; }
+/* Cards grandes de propósito: são o botão mais importante da página.
+   Duas colunas no máximo, para cada um ter presença. */
+@media (min-width: 640px) { .contact { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
 
 .contact__card {
+  --brand: var(--neon);
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 19px 18px;
+  gap: 18px;
+  padding: 26px 24px;
   background: var(--surface);
   border: 1px solid var(--border-soft);
-  border-radius: var(--radius);
-  transition: border-color 0.28s, transform 0.28s var(--ease), box-shadow 0.28s, background 0.28s;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s var(--ease), box-shadow 0.3s, background 0.3s;
+}
+
+/* cor própria de cada rede, usada no ícone e no brilho do hover */
+.contact__card--whatsapp  { --brand: #25d366; }
+.contact__card--email     { --brand: #38bdf8; }
+.contact__card--instagram { --brand: #e1306c; }
+.contact__card--github    { --brand: #c9d9f2; }
+
+/* faixa que atravessa o topo do card quando o mouse chega */
+.contact__card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--brand), transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s var(--ease);
 }
 .contact__card:hover {
-  border-color: rgba(56, 189, 248, 0.45);
-  background: rgba(56, 189, 248, 0.05);
-  transform: translateY(-4px);
-  box-shadow: var(--glow-neon);
+  border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+  background: color-mix(in srgb, var(--brand) 6%, var(--surface));
+  transform: translateY(-6px);
+  box-shadow: 0 24px 46px -26px rgba(0, 0, 0, 0.95),
+              0 0 32px -10px color-mix(in srgb, var(--brand) 55%, transparent);
 }
+.contact__card:hover::before { transform: scaleX(1); }
+
 .contact__icon {
   flex: none;
   display: grid;
   place-items: center;
-  width: 42px; height: 42px;
-  color: var(--neon);
-  background: rgba(56, 189, 248, 0.09);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: 11px;
+  width: 60px; height: 60px;
+  color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brand) 28%, transparent);
+  border-radius: 16px;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
 }
-.contact__icon svg { width: 21px; height: 21px; }
-.contact__meta { display: grid; gap: 2px; min-width: 0; }
-.contact__meta strong { font-size: 0.93rem; font-weight: 600; }
+.contact__icon svg { width: 28px; height: 28px; }
+.contact__card:hover .contact__icon {
+  transform: scale(1.08) rotate(-4deg);
+  box-shadow: 0 0 22px -6px var(--brand);
+}
+
+.contact__meta { display: grid; gap: 4px; min-width: 0; }
+.contact__meta strong { font-size: 1.14rem; font-weight: 600; letter-spacing: -0.01em; }
 .contact__meta span {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.86rem;
   color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.contact__arrow { margin-left: auto; color: var(--dim); transition: color 0.2s, transform 0.2s; }
-.contact__card:hover .contact__arrow { color: var(--neon); transform: translate(2px, -2px); }
+
+.contact__arrow {
+  margin-left: auto;
+  font-size: 1.3rem;
+  color: var(--dim);
+  transition: color 0.25s, transform 0.25s var(--ease);
+}
+.contact__card:hover .contact__arrow {
+  color: var(--brand);
+  transform: translate(4px, -4px) scale(1.15);
+}
+
+/* Navegadores sem color-mix() caem para o azul padrão — sem quebrar nada. */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  .contact__card:hover { border-color: rgba(56, 189, 248, 0.45); box-shadow: var(--glow-neon); }
+  .contact__icon { background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.25); }
+}
 
 /* ---------- 13. Rodapé ---------- */
 .footer {

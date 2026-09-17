@@ -101,7 +101,26 @@
     tick();
   }
 
-  /* ---------------- 3. Lab 3D ---------------- */
+  /* ---------------- 3. Retrato do Sobre ---------------- */
+
+  /* Se o arquivo da foto não estiver na pasta, o círculo mostra as
+     iniciais em vez do ícone de imagem quebrada do navegador. */
+  function setupAvatar() {
+    var wrap = $("#sobreAvatar");
+    if (!wrap) return;
+
+    var img = wrap.querySelector("img");
+    if (!img) return;
+
+    var markMissing = function () { wrap.classList.add("is-missing"); };
+
+    img.addEventListener("error", markMissing);
+
+    // imagem que já falhou antes deste script rodar
+    if (img.complete && img.naturalWidth === 0) markMissing();
+  }
+
+  /* ---------------- 4. Lab 3D ---------------- */
 
   function setupLab() {
     var canvas = $("#lab3d");
@@ -133,7 +152,7 @@
     });
   }
 
-  /* ---------------- 4. Skills ---------------- */
+  /* ---------------- 5. Skills ---------------- */
 
   function renderSkills(rows, offline) {
     var grid = $("#skillsGrid");
@@ -228,7 +247,7 @@
     }
   }
 
-  /* ---------------- 5. Projetos ---------------- */
+  /* ---------------- 6. Projetos ---------------- */
 
   function renderProjects(rows, offline) {
     var grid = $("#projectsGrid");
@@ -306,11 +325,12 @@
     Effects.tilt(grid);
   }
 
-  /* ---------------- 6. Boot ---------------- */
+  /* ---------------- 7. Boot ---------------- */
 
   function init() {
     setupNav();
     setupTyping();
+    setupAvatar();
     setupLab();
     Effects.init();
 
