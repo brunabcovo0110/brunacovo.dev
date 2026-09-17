@@ -138,6 +138,13 @@ code {
   background: radial-gradient(circle, rgba(34, 211, 238, 0.35), transparent 70%);
   animation-delay: -7s;
 }
+.bg-glow--3 {
+  width: 300px; height: 300px;
+  top: 72%; left: -100px;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.22), transparent 70%);
+  animation-delay: -13s;
+  animation-duration: 24s;
+}
 
 @keyframes float {
   from { transform: translate3d(0, 0, 0) scale(1); }
@@ -469,7 +476,7 @@ code {
 .section { padding: 80px 0; }
 @media (min-width: 860px) { .section { padding: 116px 0; } }
 
-.section--terminal {
+.section--lab {
   background:
     radial-gradient(ellipse 70% 100% at 50% 0%, rgba(37, 99, 235, 0.10), transparent 70%);
 }
@@ -631,164 +638,91 @@ code {
   box-shadow: 0 0 16px -4px rgba(56, 189, 248, 0.8);
 }
 
-/* ---------- 10. Terminal SQL ---------- */
-.terminal {
-  background: linear-gradient(180deg, #030814, #04101f);
+/* ---------- 10. Lab 3D ---------- */
+.lab { display: grid; gap: 24px; }
+@media (min-width: 900px) {
+  .lab { grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: center; }
+}
+
+.lab__stage {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-height: 460px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.14), transparent 62%),
+    linear-gradient(180deg, #030a16, #050f22);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow), 0 0 44px -22px rgba(56, 189, 248, 0.6);
+  box-shadow: var(--shadow), 0 0 50px -26px rgba(56, 189, 248, 0.7);
+}
+/* anel neon que pulsa atrás da esfera */
+.lab__stage::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 64%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 50%;
+  animation: ring 5.5s var(--ease) infinite;
+  pointer-events: none;
+}
+@keyframes ring {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.85; }
+  50%      { transform: translate(-50%, -50%) scale(1.06); opacity: 0.25; }
 }
 
-.terminal__bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 15px;
-  background: rgba(3, 8, 18, 0.9);
-  border-bottom: 1px solid var(--border-soft);
+.lab__stage canvas {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none; /* o arrasto gira a esfera em vez de rolar a página */
 }
-.terminal__title {
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  color: var(--dim);
-  /* no celular o título some para o status caber */
-  display: none;
-}
-@media (min-width: 560px) { .terminal__title { display: inline; } }
+.lab__stage canvas:active { cursor: grabbing; }
 
-.terminal__status {
-  margin-left: auto;
+.lab__hud {
+  position: absolute;
+  left: 14px; bottom: 13px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  padding: 5px 11px;
   font-family: var(--mono);
-  font-size: 0.72rem;
-}
-.terminal__status::before {
-  content: "";
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 8px currentColor;
-}
-.terminal__status[data-state="loading"] { color: var(--amber); }
-.terminal__status[data-state="online"]  { color: var(--lime); }
-.terminal__status[data-state="offline"] { color: var(--rose); }
-
-.terminal__screen {
-  height: 340px;
-  overflow-y: auto;
-  overflow-x: auto;
-  padding: 16px;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  line-height: 1.6;
+  font-size: 0.7rem;
   color: var(--mint);
-  /* leve efeito CRT */
-  background-image: repeating-linear-gradient(
-    180deg, rgba(56, 189, 248, 0.025) 0 1px, transparent 1px 3px
-  );
-  scrollbar-width: thin;
-  scrollbar-color: rgba(56, 189, 248, 0.4) transparent;
-}
-@media (min-width: 640px) { .terminal__screen { height: 400px; font-size: 0.82rem; padding: 20px; } }
-
-.terminal__screen::-webkit-scrollbar { width: 9px; height: 9px; }
-.terminal__screen::-webkit-scrollbar-track { background: transparent; }
-.terminal__screen::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.28);
-  border-radius: 99px;
-}
-
-/* linhas impressas pelo JS */
-.tline { white-space: pre; margin: 0; }
-.tline--wrap { white-space: pre-wrap; }
-.tline--cmd     { color: #e7f2ff; }
-.tline--cmd b   { color: var(--lime); font-weight: 400; }
-.tline--ok      { color: var(--mint); }
-.tline--info    { color: var(--muted); }
-.tline--error   { color: var(--rose); }
-.tline--warn    { color: var(--amber); }
-.tline--table   { color: var(--cyan); }
-.tline--head    { color: #ffffff; font-weight: 700; }
-.tline--rule    { color: rgba(56, 189, 248, 0.45); }
-.tline--spacer  { height: 0.7em; }
-.tline--key     { color: var(--neon); }
-
-.terminal__inputrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
-  background: rgba(3, 8, 18, 0.9);
-  border-top: 1px solid var(--border-soft);
-}
-.terminal__prompt {
-  flex: none;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--lime);
-}
-.terminal__input {
-  flex: 1;
-  min-width: 0;
-  padding: 6px 0;
-  font-family: var(--mono);
-  font-size: 0.82rem;
-  color: #e7f2ff;
-  background: none;
-  border: none;
-  caret-color: var(--neon);
-}
-.terminal__input:focus { outline: none; }
-.terminal__input::placeholder { color: #3d5678; }
-
-.terminal__run {
-  flex: none;
-  padding: 7px 14px;
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  color: var(--neon);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 8px;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.terminal__run:hover { background: rgba(56, 189, 248, 0.12); box-shadow: var(--glow-neon); }
-
-.examples {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 9px;
-  margin-top: 18px;
-}
-.examples__label {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--dim);
-}
-.chip {
-  max-width: 100%;
-  padding: 7px 13px;
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  color: var(--cyan);
-  background: rgba(34, 211, 238, 0.06);
-  border: 1px solid rgba(34, 211, 238, 0.2);
+  background: rgba(3, 8, 18, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--border-soft);
   border-radius: 999px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s var(--ease);
+  pointer-events: none;
 }
-.chip:hover {
-  background: rgba(34, 211, 238, 0.15);
-  box-shadow: 0 0 18px -6px var(--cyan);
-  transform: translateY(-2px);
+.lab__hud-live {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px var(--lime);
+  animation: pulse 2.1s ease-in-out infinite;
 }
-.chip--ghost { color: var(--muted); border-color: var(--border-soft); background: none; }
+.lab__hud-sep { color: var(--dim); }
+
+.lab__notes { display: grid; gap: 4px; }
+.lab__notes li {
+  padding: 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s var(--ease);
+}
+.lab__notes li:hover {
+  background: rgba(56, 189, 248, 0.045);
+  border-color: var(--border);
+  transform: translateX(4px);
+}
+.lab__notes h3 { font-size: 0.98rem; margin-bottom: 5px; color: var(--neon); }
+.lab__notes p  { margin: 0; font-size: 0.88rem; color: var(--muted); }
 
 /* ---------- 11. Projetos ---------- */
 .projects { display: grid; gap: 18px; }
@@ -923,22 +857,204 @@ code {
 .footer p { margin: 0; font-family: var(--mono); font-size: 0.78rem; color: var(--dim); }
 .footer__prompt { color: var(--neon); margin-right: 7px; }
 
-/* ---------- 14. Animação de entrada ---------- */
+/* ---------- 14. Entrada dos elementos ---------- */
+/* O JS põe .is-visible quando o elemento chega na tela. O atributo
+   data-reveal escolhe de onde ele vem. */
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(24px);
+  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease),
+              letter-spacing 0.9s var(--ease);
+  will-change: opacity, transform;
 }
+.reveal[data-reveal="left"]  { transform: translateX(-32px); }
+.reveal[data-reveal="right"] { transform: translateX(32px); }
+.reveal[data-reveal="scale"] { transform: scale(0.92); }
+
+/* O nome entra com as letras abrindo e se fechando até a posição final.
+   Cuidado aqui: nada de clip-path no estado inicial — ele zera a área
+   visível do elemento e o IntersectionObserver nunca dispara, deixando
+   o texto invisível para sempre. */
+.reveal[data-reveal="spread"] {
+  transform: translateY(14px);
+  letter-spacing: 0.14em;
+}
+
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* Respeita quem pediu menos movimento no sistema. */
+/* só o nome volta ao espaçamento normal — os outros nem foram mexidos */
+.reveal[data-reveal="spread"].is-visible { letter-spacing: -0.02em; }
+/* solta o will-change assim que a entrada termina */
+.reveal.is-visible { will-change: auto; }
+
+/* ---------- 15. Barra de progresso do scroll ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 60;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--blue), var(--neon), var(--mint));
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+  pointer-events: none;
+}
+
+/* ---------- 16. Brilho que segue o cursor ---------- */
+.cursor-glow {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: -1;
+  width: 420px; height: 420px;
+  margin: -210px 0 0 -210px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.10), transparent 62%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.cursor-glow.is-on { opacity: 1; }
+
+/* some no celular, onde não existe cursor */
+@media (hover: none), (pointer: coarse) {
+  .cursor-glow { display: none; }
+}
+
+/* ---------- 17. Faixa infinita de tecnologias ---------- */
+.marquee {
+  margin-top: 46px;
+  padding: 14px 0;
+  border-block: 1px solid var(--border-soft);
+  overflow: hidden;
+  /* as pontas somem em vez de cortar no seco */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: max-content;
+  /* o conteúdo é duplicado no JS; andar -50% emenda sem salto visível */
+  animation: slide 34s linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+
+@keyframes slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee__item {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.marquee__item:hover { color: var(--neon); }
+.marquee__sep { color: rgba(56, 189, 248, 0.35); font-family: var(--mono); }
+
+/* ---------- 18. Tilt e reflexo nos cards ---------- */
+/* O JS escreve --mx/--my com a posição do cursor; o reflexo segue. */
+[data-tilt] {
+  --mx: 50%;
+  --my: 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.35s var(--ease), border-color 0.3s, box-shadow 0.3s;
+}
+[data-tilt]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--mx) var(--my),
+    rgba(56, 189, 248, 0.10),
+    transparent 42%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+[data-tilt]:hover::after { opacity: 1; }
+
+/* os cards precisam de position para o ::after se encaixar */
+.skillcard, .contact__card { position: relative; }
+
+/* ---------- 19. Detalhes animados ---------- */
+/* gradiente do nome em movimento lento e contínuo */
+.hero__name {
+  background-size: 220% 100%;
+  animation: shimmer 9s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* brilho que atravessa o botão primário de tempos em tempos */
+.btn--primary { position: relative; overflow: hidden; }
+.btn--primary::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -60%;
+  width: 45%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-18deg);
+  animation: sweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sweep {
+  0%, 62% { left: -60%; }
+  86%     { left: 118%; }
+  100%    { left: 118%; }
+}
+
+/* a linha ao lado do título cresce quando a seção aparece */
+.section__head .section__line { transform: scaleX(0); transform-origin: left; }
+.section__head.is-visible .section__line {
+  transform: scaleX(1);
+  transition: transform 1s var(--ease) 0.15s;
+}
+
+/* as tags de skill pipocam uma depois da outra */
+.skillcard.is-visible .tag {
+  animation: pop 0.5s var(--ease) both;
+  animation-delay: var(--pop-delay, 0ms);
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* o parallax do JS escreve --shift nos glows do fundo */
+.bg-glow { translate: 0 var(--shift, 0px); }
+
+/* ---------- 20. Menos movimento ---------- */
+/* Respeita quem pediu menos movimento no sistema: o site inteiro fica
+   parado, sem perder nenhum conteúdo. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
+
+  .reveal,
+  .reveal[data-reveal] {
+    opacity: 1;
+    transform: none;
+    letter-spacing: normal;
+  }
+  .section__head .section__line { transform: scaleX(1); }
   .caret { animation: none; }
+  .marquee__track { animation: none; }
+  .cursor-glow { display: none; }
+  .btn--primary::after { display: none; }
+  .lab__stage::before { animation: none; }
 }

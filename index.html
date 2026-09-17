@@ -24,6 +24,10 @@
 <div class="bg-grid" aria-hidden="true"></div>
 <div class="bg-glow bg-glow--1" aria-hidden="true"></div>
 <div class="bg-glow bg-glow--2" aria-hidden="true"></div>
+<div class="bg-glow bg-glow--3" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
@@ -36,7 +40,7 @@
     <nav class="nav__links" id="navLinks" aria-label="Navegação principal">
       <a href="#sobre">Sobre</a>
       <a href="#skills">Skills</a>
-      <a href="#terminal">Terminal SQL</a>
+      <a href="#lab">Lab</a>
       <a href="#projetos">Projetos</a>
       <a href="#contato" class="nav__cta">Contato</a>
     </nav>
@@ -52,29 +56,29 @@
 <!-- ================= HERO ================= -->
 <section class="hero" id="hero">
   <div class="container hero__inner">
-    <p class="hero__eyebrow reveal">
+    <p class="hero__eyebrow reveal" data-reveal="scale">
       <span class="dot"></span> Disponível para novos projetos
     </p>
 
-    <h1 class="hero__name reveal">Bruna Barbosa Covo</h1>
+    <h1 class="hero__name reveal" data-reveal="spread" data-parallax="0.16">Bruna Barbosa Covo</h1>
 
-    <p class="hero__tagline reveal">
+    <p class="hero__tagline reveal" data-reveal="left" data-parallax="0.1">
       Desenvolvedora de sites em formação <span class="pipe">|</span> Projetos personalizados sob medida
     </p>
 
-    <div class="hero__typing reveal" aria-live="polite">
+    <div class="hero__typing reveal" data-reveal="left" aria-live="polite">
       <span class="hero__typing-prompt">bruna@dev:~$</span>
       <span class="hero__typing-text" id="typingText"></span><span class="caret" aria-hidden="true"></span>
     </div>
 
-    <div class="hero__actions reveal">
-      <a href="#terminal" class="btn btn--primary">
-        <span class="btn__icon">&gt;_</span> Rodar uma query
+    <div class="hero__actions reveal" data-reveal="up">
+      <a href="#projetos" class="btn btn--primary" data-magnetic>
+        <span class="btn__icon">&gt;_</span> Ver projetos
       </a>
-      <a href="#projetos" class="btn btn--ghost">Ver projetos</a>
+      <a href="#contato" class="btn btn--ghost" data-magnetic>Falar comigo</a>
     </div>
 
-    <dl class="hero__stats reveal">
+    <dl class="hero__stats reveal" data-reveal="up">
       <div><dt>Stack</dt><dd>HTML · CSS · JS</dd></div>
       <div><dt>Banco</dt><dd>Postgres / Supabase</dd></div>
       <div><dt>Foco</dt><dd>Sob medida</dd></div>
@@ -96,7 +100,7 @@
     </header>
 
     <div class="sobre">
-      <div class="sobre__card reveal">
+      <div class="sobre__card reveal" data-reveal="left">
         <div class="sobre__filebar">
           <span class="dotrow"><i></i><i></i><i></i></span>
           <span class="sobre__filename">sobre.md</span>
@@ -114,20 +118,81 @@
         </div>
       </div>
 
-      <ul class="sobre__points reveal">
-        <li>
+      <ul class="sobre__points">
+        <li class="reveal" data-reveal="right">
           <span class="sobre__bullet">01</span>
           <div><h3>Sob medida</h3><p>Nada de template genérico: cada site nasce a partir do que o projeto precisa.</p></div>
         </li>
-        <li>
+        <li class="reveal" data-reveal="right">
           <span class="sobre__bullet">02</span>
           <div><h3>Do simples ao 3D</h3><p>De landing pages diretas a interfaces com movimento, profundidade e efeitos 3D.</p></div>
         </li>
-        <li>
+        <li class="reveal" data-reveal="right">
           <span class="sobre__bullet">03</span>
-          <div><h3>Com banco de dados</h3><p>Conteúdo dinâmico de verdade — como o terminal SQL logo abaixo, que lê um Postgres real.</p></div>
+          <div><h3>Com banco de dados</h3><p>Conteúdo dinâmico de verdade — formulários e páginas que leem e gravam em Postgres.</p></div>
         </li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTATO ================= -->
+<section class="section section--contato" id="contato">
+  <div class="container">
+    <header class="section__head reveal">
+      <span class="section__index">02</span>
+      <h2 class="section__title">Contato</h2>
+      <div class="section__line"></div>
+    </header>
+
+    <p class="section__sub reveal">
+      Tem um projeto em mente? Me chama — respondo rápido.
+    </p>
+
+    <div class="contact">
+      <a class="contact__card reveal" data-reveal="up" data-tilt href="https://wa.me/5535999315579" target="_blank" rel="noopener noreferrer">
+        <span class="contact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+        </span>
+        <span class="contact__meta">
+          <strong>WhatsApp</strong>
+          <span>+55 35 99931-5579</span>
+        </span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <a class="contact__card reveal" data-reveal="up" data-tilt href="mailto:brunabcovo@gmail.com">
+        <span class="contact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg>
+        </span>
+        <span class="contact__meta">
+          <strong>E-mail</strong>
+          <span>brunabcovo@gmail.com</span>
+        </span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <a class="contact__card reveal" data-reveal="up" data-tilt href="https://instagram.com/bruhx_0110" target="_blank" rel="noopener noreferrer">
+        <span class="contact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+        </span>
+        <span class="contact__meta">
+          <strong>Instagram</strong>
+          <span>@bruhx_0110</span>
+        </span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <a class="contact__card reveal" data-reveal="up" data-tilt href="https://github.com/brunabcovo0110" target="_blank" rel="noopener noreferrer">
+        <span class="contact__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+        </span>
+        <span class="contact__meta">
+          <strong>GitHub</strong>
+          <span>brunabcovo0110</span>
+        </span>
+        <span class="contact__arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
   </div>
 </section>
@@ -136,7 +201,7 @@
 <section class="section" id="skills">
   <div class="container">
     <header class="section__head reveal">
-      <span class="section__index">02</span>
+      <span class="section__index">03</span>
       <h2 class="section__title">Skills</h2>
       <div class="section__line"></div>
     </header>
@@ -149,54 +214,52 @@
       <div class="state-msg">carregando skills<span class="caret caret--inline"></span></div>
     </div>
   </div>
+
+  <!-- faixa infinita de tecnologias, preenchida pelo JS -->
+  <div class="marquee reveal" id="marquee" aria-hidden="true">
+    <div class="marquee__track" id="marqueeTrack"></div>
+  </div>
 </section>
 
-<!-- ================= TERMINAL SQL ================= -->
-<section class="section section--terminal" id="terminal">
+<!-- ================= LAB 3D ================= -->
+<section class="section section--lab" id="lab">
   <div class="container">
     <header class="section__head reveal">
-      <span class="section__index">03</span>
-      <h2 class="section__title">Terminal SQL</h2>
+      <span class="section__index">04</span>
+      <h2 class="section__title">Lab</h2>
       <div class="section__line"></div>
     </header>
 
     <p class="section__sub reveal">
-      Consulta de verdade, em um banco Postgres de verdade. Digite um <code>SELECT</code> e veja a resposta.
-      <br />
-      <span class="muted">Somente leitura: comandos de escrita são bloqueados antes de sair do navegador — e também pelo RLS do banco.</span>
+      Efeitos 3D feitos à mão, sem biblioteca nenhuma — só matemática e um
+      <code>&lt;canvas&gt;</code>. Passe o mouse por cima (ou arraste o dedo) para girar.
     </p>
 
-    <div class="terminal reveal" id="terminalBox">
-      <div class="terminal__bar">
-        <span class="dotrow"><i></i><i></i><i></i></span>
-        <span class="terminal__title">psql — brunacovo.dev</span>
-        <span class="terminal__status" id="dbStatus" data-state="loading">conectando…</span>
+    <div class="lab">
+      <div class="lab__stage reveal" data-reveal="scale">
+        <canvas id="lab3d" role="img" aria-label="Malha de pontos em três dimensões que gira acompanhando o mouse"></canvas>
+        <div class="lab__hud">
+          <span class="lab__hud-live"></span>
+          <span id="labFps">—</span>
+          <span class="lab__hud-sep">·</span>
+          <span id="labPoints">—</span>
+        </div>
       </div>
 
-      <div class="terminal__screen" id="terminalOutput" role="log" aria-live="polite" tabindex="0"></div>
-
-      <form class="terminal__inputrow" id="terminalForm" autocomplete="off">
-        <label class="terminal__prompt" for="terminalInput">bruna@db=&gt;</label>
-        <input
-          class="terminal__input"
-          id="terminalInput"
-          name="query"
-          type="text"
-          spellcheck="false"
-          autocapitalize="off"
-          autocorrect="off"
-          placeholder="SELECT * FROM projetos;"
-          aria-label="Digite uma consulta SQL de leitura" />
-        <button class="terminal__run" type="submit">executar ⏎</button>
-      </form>
-    </div>
-
-    <div class="examples reveal">
-      <span class="examples__label">Experimente:</span>
-      <button class="chip" data-query="SELECT * FROM projetos;">SELECT * FROM projetos;</button>
-      <button class="chip" data-query="SELECT nome, categoria FROM skills WHERE categoria = 'Banco de Dados';">SELECT nome, categoria FROM skills WHERE …</button>
-      <button class="chip" data-query="SELECT COUNT(*) FROM skills;">SELECT COUNT(*) FROM skills;</button>
-      <button class="chip chip--ghost" data-query="help">help</button>
+      <ul class="lab__notes">
+        <li class="reveal" data-reveal="right">
+          <h3>Espiral de Fibonacci</h3>
+          <p>Os pontos se espalham por igual na esfera usando o ângulo áureo, sem amontoar nos polos.</p>
+        </li>
+        <li class="reveal" data-reveal="right">
+          <h3>Projeção em perspectiva</h3>
+          <p>Cada ponto gira em dois eixos e é achatado na tela com <code>fov / (fov + z)</code> — o que está longe encolhe e some.</p>
+        </li>
+        <li class="reveal" data-reveal="right">
+          <h3>Zero dependências</h3>
+          <p>Nenhum Three.js: é canvas 2D puro, com as ligações desenhadas só entre pontos próximos.</p>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
@@ -205,7 +268,7 @@
 <section class="section" id="projetos">
   <div class="container">
     <header class="section__head reveal">
-      <span class="section__index">04</span>
+      <span class="section__index">05</span>
       <h2 class="section__title">Projetos</h2>
       <div class="section__line"></div>
     </header>
@@ -216,67 +279,6 @@
 
     <div class="projects" id="projectsGrid" aria-live="polite">
       <div class="state-msg">carregando projetos<span class="caret caret--inline"></span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CONTATO ================= -->
-<section class="section section--contato" id="contato">
-  <div class="container">
-    <header class="section__head reveal">
-      <span class="section__index">05</span>
-      <h2 class="section__title">Contato</h2>
-      <div class="section__line"></div>
-    </header>
-
-    <p class="section__sub reveal">
-      Tem um projeto em mente? Me chama — respondo rápido.
-    </p>
-
-    <div class="contact reveal">
-      <a class="contact__card" href="https://wa.me/5535999315579" target="_blank" rel="noopener noreferrer">
-        <span class="contact__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
-        </span>
-        <span class="contact__meta">
-          <strong>WhatsApp</strong>
-          <span>+55 35 99931-5579</span>
-        </span>
-        <span class="contact__arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a class="contact__card" href="mailto:brunabcovo@gmail.com">
-        <span class="contact__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg>
-        </span>
-        <span class="contact__meta">
-          <strong>E-mail</strong>
-          <span>brunabcovo@gmail.com</span>
-        </span>
-        <span class="contact__arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a class="contact__card" href="https://instagram.com/bruhx_0110" target="_blank" rel="noopener noreferrer">
-        <span class="contact__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
-        </span>
-        <span class="contact__meta">
-          <strong>Instagram</strong>
-          <span>@bruhx_0110</span>
-        </span>
-        <span class="contact__arrow" aria-hidden="true">↗</span>
-      </a>
-
-      <a class="contact__card" href="https://github.com/brunacovo0110" target="_blank" rel="noopener noreferrer">
-        <span class="contact__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-        </span>
-        <span class="contact__meta">
-          <strong>GitHub</strong>
-          <span>brunacovo0110</span>
-        </span>
-        <span class="contact__arrow" aria-hidden="true">↗</span>
-      </a>
     </div>
   </div>
 </section>
@@ -296,8 +298,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/db.js"></script>
-<script src="assets/js/sql-engine.js"></script>
-<script src="assets/js/terminal.js"></script>
+<script src="assets/js/lab-3d.js"></script>
+<script src="assets/js/effects.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

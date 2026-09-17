@@ -1,22 +1,13 @@
 /* =====================================================================
    db.js — camada de acesso ao Supabase.
-   Expõe window.DB com o client, o schema conhecido e dados de fallback
-   usados quando o banco não está configurado ou está fora do ar.
+   Expõe window.DB com o client e a leitura das tabelas do portfólio.
+   Se o banco não responder, devolve uma cópia local do conteúdo para o
+   site nunca aparecer vazio para quem chegou nele.
    ===================================================================== */
 
 (function () {
   "use strict";
 
-  /* Schema que o terminal conhece. Serve para três coisas:
-     validar nomes de tabela/coluna antes de ir ao banco, montar a saída
-     do comando \d, e garantir que nada fora desta lista seja consultado. */
-  var SCHEMA = {
-    projetos: ["id", "titulo", "descricao", "tecnologias", "link"],
-    skills: ["id", "nome", "categoria"]
-  };
-
-  /* Conteúdo mostrado se o Supabase não responder, para o site nunca
-     aparecer vazio para quem chegou nele. */
   var FALLBACK = {
     skills: [
       { id: 1, nome: "HTML5", categoria: "Linguagens & Marcação" },
@@ -31,18 +22,26 @@
       { id: 10, nome: "Netlify", categoria: "Versionamento & Deploy" },
       { id: 11, nome: "Design Responsivo", categoria: "Interface & Efeitos" },
       { id: 12, nome: "Animações CSS", categoria: "Interface & Efeitos" },
-      { id: 13, nome: "Three.js / WebGL", categoria: "Interface & Efeitos" },
+      { id: 13, nome: "Canvas / 3D", categoria: "Interface & Efeitos" },
       { id: 14, nome: "Figma", categoria: "Interface & Efeitos" },
       { id: 15, nome: "Acessibilidade (a11y)", categoria: "Interface & Efeitos" }
     ],
     projetos: [
       {
         id: 1,
+        titulo: "Estância Moda Country",
+        descricao:
+          "Site para loja de moda country, com formulário de contato gravando as mensagens em banco de dados e informações de contato editáveis pelo painel.",
+        tecnologias: "HTML, CSS, JavaScript, Supabase",
+        link: "https://estancia-country.vercel.app"
+      },
+      {
+        id: 2,
         titulo: "Portfólio brunacovo.dev",
         descricao:
-          "Este próprio site: portfólio com identidade tech, terminal SQL interativo e dados vindos de um banco Postgres real.",
+          "Este próprio site: portfólio com identidade tech, malha 3D animada em canvas puro e conteúdo vindo de um banco Postgres real.",
         tecnologias: "HTML, CSS, JavaScript, Supabase",
-        link: "https://github.com/brunacovo0110/brunacovo-dev"
+        link: "https://github.com/brunabcovo0110/brunacovo.dev"
       }
     ]
   };
@@ -66,21 +65,7 @@
     }
   }
 
-  /* Faz um SELECT leve só para saber se o banco responde. */
-  function ping() {
-    if (!client) return Promise.resolve({ ok: false, error: configError });
-
-    return client
-      .from("skills")
-      .select("id", { count: "exact", head: true })
-      .then(function (res) {
-        if (res.error) return { ok: false, error: res.error.message };
-        return { ok: true, count: res.count };
-      })
-      .catch(function (err) {
-        return { ok: false, error: err.message };
-      });
-  }
+  if (configError) console.warn("[db] " + configError);
 
   /* Busca uma tabela inteira, caindo para o fallback em caso de erro. */
   function fetchAll(table, orderBy) {
@@ -104,14 +89,9 @@
 
   window.DB = {
     client: client,
-    schema: SCHEMA,
-    tables: Object.keys(SCHEMA),
     fallback: FALLBACK,
     configError: configError,
-    isReady: function () {
-      return !!client;
-    },
-    ping: ping,
+    isReady: function () { return !!client; },
     fetchAll: fetchAll
   };
 })();

@@ -1,14 +1,14 @@
 /* =====================================================================
-   main.js — liga tudo: navegação, efeito de digitação do hero,
-   animação de entrada das seções, skills e projetos vindos do Supabase
-   e a inicialização do terminal SQL.
+   main.js — liga tudo: navegação, efeito de digitação do hero, a malha
+   3D do Lab e o conteúdo vindo do Supabase (skills e projetos).
+   Os efeitos de movimento ficam em effects.js.
    ===================================================================== */
 
 (function () {
   "use strict";
 
   var $ = function (sel) { return document.querySelector(sel); };
-  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------------- 1. Navegação ---------------- */
 
@@ -29,7 +29,6 @@
       toggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
     });
 
-    // fecha o menu ao escolher uma seção
     links.addEventListener("click", function (event) {
       if (event.target.tagName !== "A") return;
       links.classList.remove("is-open");
@@ -37,8 +36,10 @@
     });
 
     // marca no menu a seção que está na tela
-    var sections = Array.prototype.slice.call(document.querySelectorAll("main section[id]"));
     var anchors = Array.prototype.slice.call(links.querySelectorAll("a[href^='#']"));
+    var sections = anchors
+      .map(function (a) { return document.querySelector(a.getAttribute("href")); })
+      .filter(Boolean);
 
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -63,7 +64,7 @@
       "Projetos sob medida."
     ];
 
-    if (reducedMotion) {
+    if (reduced) {
       el.textContent = phrases.join(" ");
       return;
     }
@@ -100,28 +101,36 @@
     tick();
   }
 
-  /* ---------------- 3. Animação de entrada ---------------- */
+  /* ---------------- 3. Lab 3D ---------------- */
 
-  function setupReveal() {
-    var items = document.querySelectorAll(".reveal");
+  function setupLab() {
+    var canvas = $("#lab3d");
+    if (!canvas || typeof Lab3D !== "function") return;
 
-    if (reducedMotion || !("IntersectionObserver" in window)) {
-      items.forEach(function (el) { el.classList.add("is-visible"); });
+    var lab = new Lab3D(canvas, { fps: $("#labFps") });
+    $("#labPoints").textContent = lab.points.length + " pontos";
+
+    if (reduced) {
+      lab.renderStill();
       return;
     }
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry, i) {
-        if (!entry.isIntersecting) return;
-        // pequeno escalonamento para os elementos não subirem todos juntos
-        setTimeout(function () {
-          entry.target.classList.add("is-visible");
-        }, i * 70);
-        observer.unobserve(entry.target);
+    // só anima enquanto a seção está na tela: fora dela, nada de gastar
+    // bateria desenhando 60 vezes por segundo
+    var watcher = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) lab.start();
+        else lab.stop();
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+    }, { threshold: 0.05 });
 
-    items.forEach(function (el) { observer.observe(el); });
+    watcher.observe(canvas);
+
+    // e também pausa quando a aba vai para segundo plano
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) lab.stop();
+      else if (canvas.getBoundingClientRect().top < window.innerHeight) lab.start();
+    });
   }
 
   /* ---------------- 4. Skills ---------------- */
@@ -151,6 +160,8 @@
     groups.forEach(function (group) {
       var card = document.createElement("article");
       card.className = "skillcard reveal";
+      card.dataset.reveal = "up";
+      card.dataset.tilt = "";
 
       var head = document.createElement("div");
       head.className = "skillcard__head";
@@ -168,10 +179,11 @@
 
       var tags = document.createElement("div");
       tags.className = "tags";
-      group.itens.forEach(function (nome) {
+      group.itens.forEach(function (nome, i) {
         var tag = document.createElement("span");
         tag.className = "tag";
         tag.textContent = nome;
+        tag.style.setProperty("--pop-delay", (i * 55) + "ms");
         tags.appendChild(tag);
       });
 
@@ -187,7 +199,33 @@
       grid.appendChild(note);
     }
 
-    revealNewNodes(grid);
+    Effects.revealWithin(grid);
+    Effects.tilt(grid);
+    buildMarquee(rows);
+  }
+
+  /* Faixa infinita com os nomes das tecnologias. O conteúdo é duplicado
+     para que a emenda entre o fim e o começo não apareça. */
+  function buildMarquee(rows) {
+    var track = $("#marqueeTrack");
+    if (!track || !rows.length) return;
+
+    var names = rows.map(function (r) { return r.nome; });
+    track.innerHTML = "";
+
+    for (var pass = 0; pass < 2; pass++) {
+      names.forEach(function (nome) {
+        var item = document.createElement("span");
+        item.className = "marquee__item";
+        item.textContent = nome;
+        track.appendChild(item);
+
+        var sep = document.createElement("span");
+        sep.className = "marquee__sep";
+        sep.textContent = "//";
+        track.appendChild(sep);
+      });
+    }
   }
 
   /* ---------------- 5. Projetos ---------------- */
@@ -205,6 +243,8 @@
     rows.forEach(function (row, index) {
       var card = document.createElement("article");
       card.className = "project reveal";
+      card.dataset.reveal = "up";
+      card.dataset.tilt = "";
 
       var id = document.createElement("div");
       id.className = "project__id";
@@ -262,71 +302,17 @@
       grid.appendChild(note);
     }
 
-    revealNewNodes(grid);
+    Effects.revealWithin(grid);
+    Effects.tilt(grid);
   }
 
-  /* Elementos criados depois do setupReveal() precisam do próprio
-     observer, senão ficariam invisíveis para sempre. */
-  function revealNewNodes(container) {
-    var nodes = container.querySelectorAll(".reveal");
-
-    if (reducedMotion || !("IntersectionObserver" in window)) {
-      nodes.forEach(function (el) { el.classList.add("is-visible"); });
-      return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry, i) {
-        if (!entry.isIntersecting) return;
-        setTimeout(function () { entry.target.classList.add("is-visible"); }, i * 70);
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-
-    nodes.forEach(function (el) { observer.observe(el); });
-  }
-
-  /* ---------------- 6. Terminal ---------------- */
-
-  function setupTerminal() {
-    var term = new Terminal($("#terminalOutput"), $("#terminalForm"), $("#terminalInput"));
-    var status = $("#dbStatus");
-
-    term.banner();
-
-    DB.ping().then(function (res) {
-      if (res.ok) {
-        status.dataset.state = "online";
-        status.textContent = "conectado";
-        term.print("conectado a public.projetos, public.skills", "ok");
-      } else {
-        status.dataset.state = "offline";
-        status.textContent = "offline";
-        term.printWrapped("aviso: sem conexão com o banco — " + res.error, "error");
-        term.printWrapped(
-          "confira SUPABASE_URL e SUPABASE_ANON_KEY em assets/js/config.js",
-          "warn"
-        );
-      }
-      term.spacer();
-    });
-
-    document.querySelectorAll(".chip").forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        var query = chip.dataset.query;
-        $("#terminal").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "center" });
-        term.typeAndRun(query);
-      });
-    });
-  }
-
-  /* ---------------- 7. Boot ---------------- */
+  /* ---------------- 6. Boot ---------------- */
 
   function init() {
     setupNav();
     setupTyping();
-    setupReveal();
-    setupTerminal();
+    setupLab();
+    Effects.init();
 
     DB.fetchAll("skills", "id").then(function (res) {
       renderSkills(res.rows, res.offline);

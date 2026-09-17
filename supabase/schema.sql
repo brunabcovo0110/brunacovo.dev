@@ -73,15 +73,19 @@ insert into public.skills (nome, categoria) values
   ('Netlify',               'Versionamento & Deploy'),
   ('Design Responsivo',     'Interface & Efeitos'),
   ('Animações CSS',         'Interface & Efeitos'),
-  ('Three.js / WebGL',      'Interface & Efeitos'),
+  ('Canvas / 3D',           'Interface & Efeitos'),
   ('Figma',                 'Interface & Efeitos'),
   ('Acessibilidade (a11y)', 'Interface & Efeitos');
 
 insert into public.projetos (titulo, descricao, tecnologias, link) values
   ('Portfólio brunacovo.dev',
-   'Este próprio site: portfólio com identidade tech, terminal SQL interativo e dados vindos de um banco Postgres real.',
+   'Este próprio site: portfólio com identidade tech, malha 3D animada em canvas puro e conteúdo vindo de um banco Postgres real.',
    'HTML, CSS, JavaScript, Supabase',
-   'https://github.com/brunacovo0110/brunacovo-dev');
+   'https://github.com/brunabcovo0110/brunacovo.dev'),
+  ('Estância Moda Country',
+   'Site para loja de moda country, com formulário de contato gravando as mensagens em banco de dados e informações de contato editáveis pelo painel.',
+   'HTML, CSS, JavaScript, Supabase',
+   'https://estancia-country.vercel.app');
 
 -- ---------------------------------------------------------------------
 -- 4. Conferência
