@@ -1,0 +1,25 @@
+# Variáveis locais — nunca commitar
+.env
+.env.local
+.env.*.local
+
+# Dependências e build
+node_modules/
+.vercel/
+.netlify/
+dist/
+
+# Sistema operacional / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Configuração local do Claude Code
+.claude/
