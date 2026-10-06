@@ -23,3 +23,7 @@ npm-debug.log*
 
 # Configuração local do Claude Code
 .claude/
+
+# Outros projetos que moram dentro desta pasta — nao fazem parte do site
+pasta.lowticket/
+site.1/
