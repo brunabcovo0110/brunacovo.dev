@@ -26,9 +26,22 @@
       { id: 14, nome: "Figma", categoria: "Interface & Efeitos" },
       { id: 15, nome: "Acessibilidade (a11y)", categoria: "Interface & Efeitos" }
     ],
+    /* Esta lista precisa espelhar a tabela `projetos` do Supabase.
+       No plano gratuito o banco hiberna depois de alguns dias sem acesso,
+       e é esta cópia que entra no lugar — se ela estiver desatualizada, o
+       portfólio aparece pela metade para quem visita. Ao cadastrar um
+       projeto novo no painel, acrescente ele aqui também. */
     projetos: [
       {
         id: 1,
+        titulo: "Portfólio brunacovo.dev",
+        descricao:
+          "Este próprio site: portfólio com identidade tech, malha 3D animada em canvas puro e conteúdo vindo de um banco Postgres real.",
+        tecnologias: "HTML, CSS, JavaScript, Supabase",
+        link: "https://github.com/brunabcovo0110/brunacovo.dev"
+      },
+      {
+        id: 2,
         titulo: "Estância Moda Country",
         descricao:
           "Site para loja de moda country, com formulário de contato gravando as mensagens em banco de dados e informações de contato editáveis pelo painel.",
@@ -36,12 +49,28 @@
         link: "https://estancia-country.vercel.app"
       },
       {
-        id: 2,
-        titulo: "Portfólio brunacovo.dev",
+        id: 3,
+        titulo: "LUNÉA — Gelateria Artesanal",
         descricao:
-          "Este próprio site: portfólio com identidade tech, malha 3D animada em canvas puro e conteúdo vindo de um banco Postgres real.",
-        tecnologias: "HTML, CSS, JavaScript, Supabase",
-        link: "https://github.com/brunabcovo0110/brunacovo.dev"
+          "Site para sorveteria artesanal, com vitrine de sabores e um montador de sorvete interativo: o visitante escolhe tamanho, sabores, coberturas e complementos, e o preço se atualiza em tempo real. Tem ainda seção de história, mapa da loja e horários.",
+        tecnologias: "HTML, CSS, JavaScript, Canvas",
+        link: "https://sorveteria-lun.vercel.app"
+      },
+      {
+        id: 4,
+        titulo: "Falcão Advocacia",
+        descricao:
+          "Site institucional para escritório boutique de advocacia empresarial, com visual sóbrio e discreto: trajetória do advogado, princípios, áreas de atuação, metodologia de trabalho e formulário para agendar uma conversa.",
+        tecnologias: "HTML, CSS, JavaScript, Canvas",
+        link: "https://advocacia-falcao.vercel.app"
+      },
+      {
+        id: 5,
+        titulo: "Weatherby & Sloane — Alfaiataria",
+        descricao:
+          "Loja online para uma alfaiataria sob medida de Londres, com várias páginas: catálogo filtrado por categoria, carrinho que guarda os itens no navegador e telas de sacola e finalização de pedido. Visual clássico, inspirado nas vitrines de Mayfair.",
+        tecnologias: "HTML, CSS, JavaScript, LocalStorage",
+        link: "https://london-store-kappa.vercel.app"
       }
     ]
   };

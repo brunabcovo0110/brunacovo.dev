@@ -285,12 +285,9 @@
       grid.appendChild(card);
     });
 
-    if (offline) {
-      var note = document.createElement("p");
-      note.className = "state-msg state-msg--error";
-      note.textContent = "* exibindo lista local: o banco não respondeu.";
-      grid.appendChild(note);
-    }
+    /* De propósito, nada aparece na tela quando o banco não responde:
+       quem visita vê a lista completa e não precisa saber de onde ela
+       veio. O aviso fica só no console, em db.js, para quem for depurar. */
 
     Effects.revealWithin(grid);
     Effects.tilt(grid);
@@ -388,12 +385,7 @@
       grid.appendChild(card);
     });
 
-    if (offline) {
-      var note = document.createElement("p");
-      note.className = "state-msg state-msg--error";
-      note.textContent = "* exibindo dados locais: o banco não respondeu.";
-      grid.appendChild(note);
-    }
+    // ver o comentário em renderSkills: o aviso de banco fora não vai à tela
 
     Effects.revealWithin(grid);
     Effects.tilt(grid);
